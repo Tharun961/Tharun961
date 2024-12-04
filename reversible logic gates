@@ -1,5 +1,5 @@
                 Design 
-module feyman_gate(a,b,p,q);
+module feynman_gate(a,b,p,q);
   input a,b;
   output p,q;
   wire w1;
@@ -11,10 +11,10 @@ endmodule
 
                Testbench
 `timescale 1ns/1ps
-module feyman_gate_tb();
+module feynman_gate_tb();
   reg a,b;
   wire p,q;
-  feyman_gate uut(a,b,p,q);
+  feynman_gate uut(a,b,p,q);
   initial begin
     #100 a=0;b=0;
     #100 a=0;b=1;
