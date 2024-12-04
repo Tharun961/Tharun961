@@ -24,3 +24,36 @@ module feyman_gate_tb();
     $dumpvars;
   end
 endmodule
+               Design
+module toffoli_gate(a,b,c,x,y,z);
+  input a,b,c;
+  output x,y,z;
+  wire w1;
+  //gate level modeling
+  not t1(w1,a);
+  not t2(x,w1);
+  not t3(w2,b);
+  not t4(y,w2);
+  and t5(w1,a,b);
+  xor t6(z,w1,c);
+endmodule
+    
+               Testbench 
+`timescale 1ns/1ps
+module toffoli_gate_tb();
+  reg a,b,c;
+  wire x,y,z;
+  toffoli_gate uut(a,b,c,x,y,z);
+  initial begin
+    #100 a=0;b=0;c=0;
+    #100 a=0;b=0;c=1;
+    #100 a=0;b=1;c=0;
+    #100 a=0;b=1;c=1;
+    #100 a=0;b=0;c=0;
+    #100 a=1;b=0;c=1;
+    #100 a=1;b=1;c=0;
+    #100 a=1;b=1;c=1;
+    $dumpfile("dump.vcd");
+    $dumpvars;
+  end
+endmodule
