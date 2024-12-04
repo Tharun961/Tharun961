@@ -1,4 +1,5 @@
                 Design 
+
 module feynman_gate(a,b,p,q);
   input a,b;
   output p,q;
@@ -10,6 +11,7 @@ module feynman_gate(a,b,p,q);
 endmodule
 
                Testbench
+
 `timescale 1ns/1ps
 module feynman_gate_tb();
   reg a,b;
@@ -25,6 +27,7 @@ module feynman_gate_tb();
   end
 endmodule
                Design
+
 module toffoli_gate(a,b,c,x,y,z);
   input a,b,c;
   output x,y,z;
@@ -39,11 +42,52 @@ module toffoli_gate(a,b,c,x,y,z);
 endmodule
     
                Testbench 
+
 `timescale 1ns/1ps
 module toffoli_gate_tb();
   reg a,b,c;
   wire x,y,z;
   toffoli_gate uut(a,b,c,x,y,z);
+  initial begin
+    #100 a=0;b=0;c=0;
+    #100 a=0;b=0;c=1;
+    #100 a=0;b=1;c=0;
+    #100 a=0;b=1;c=1;
+    #100 a=0;b=0;c=0;
+    #100 a=1;b=0;c=1;
+    #100 a=1;b=1;c=0;
+    #100 a=1;b=1;c=1;
+    $dumpfile("dump.vcd");
+    $dumpvars;
+  end
+endmodule
+
+                Design 
+
+module fredkin_gate(a,b,c,x,y,z);
+  input a,b,c;
+  output x,y,z;
+  wire w1,w2,w3,w4,w5,w6;
+  //gate level modeling
+  not t1(w1,a);
+  not t2(x,w1);
+  not t3(w1,a);
+  and t4(w2,w1,b);
+  and t5(w3,a,c);
+  xor t6(y,w2,w3);
+  and t7(w4,a,b);
+  not t8(w5,a);
+  and t9(w6,w5,c);
+  xor t10(z,w4,w6);
+endmodule
+
+                  Testbench 
+
+`timescale 1ns/1ps
+module fredkin_gate_tb();
+  reg a,b,c;
+  wire x,y,z;
+  fredkin_gate uut(a,b,c,x,y,z);
   initial begin
     #100 a=0;b=0;c=0;
     #100 a=0;b=0;c=1;
