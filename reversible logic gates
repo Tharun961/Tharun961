@@ -32,7 +32,7 @@ endmodule
 module toffoli_gate(a,b,c,x,y,z);
   input a,b,c;
   output x,y,z;
-  wire w1;
+  wire w1,w2;
   //gate level modeling
   not t1(w1,a);
   not t2(x,w1);
