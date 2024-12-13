@@ -102,3 +102,37 @@ module fredkin_gate_tb();
     $dumpvars;
   end
 endmodule
+   
+                   Design
+ 
+module peres(a,b,c,p,q,r);
+input a,b,c;
+output p,q,r;
+wire w1,w2;
+//gate level modeling
+not t1(w1,a);
+not t2(p,w1);
+xor t3(q,a,b);
+and t4(w2,a,b);
+xor t5(r,w2,c);
+endmodule
+ 
+                 Testbench
+
+module peres_tb();
+reg a,b,c;
+wire p,q,r;
+peres uut(a,b,c,p,q,r);
+initial begin
+a=0;b=0;c=0;
+#100 a=0;b=0;c=1;
+#100 a=0;b=1;c=0;
+#100 a=0;b=1;c=1;
+#100 a=1;b=0;c=0;
+#100 a=1;b=0;c=1;
+#100 a=1;b=1;c=0;
+#100 a=1;b=1;c=1;
+#100;
+$finish();
+end
+endmodule
