@@ -35,13 +35,6 @@ wire [15:0]sum;
 wire [15:0]carry;
 bit_16_fa uut(a,b,cin,sum,carry);
 initial begin
-a=0;b=0;cin=0;
-#100 a=0;b=0;cin=1;
-#100 a=0;b=1;cin=0;
-#100 a=0;b=1;cin=1;
-#100 a=1;b=0;cin=0;
-#100 a=1;b=0;cin=1;
-#100 a=1;b=1;cin=0;
-#100 a=1;b=1;cin=1;
+100 a=70;b=70;
 end
 endmodule
