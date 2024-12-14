@@ -8,6 +8,7 @@ output [15:0]sum;
 output [15:0]carry;
 wire [15:0]g1,g2,w1,w2,c;
 //gate level modeling
+peres_fa m0(a[0],b[0],cin,sum[0],carry[0]);
 peres_fa m1(a[1],b[1],cin,sum[1],carry[1]);
 peres_fa m2(a[2],b[2],cin,sum[2],carry[2]);
 peres_fa m3(a[3],b[3],cin,sum[3],carry[3]);
@@ -22,10 +23,8 @@ peres_fa m11(a[11],b[11],cin,sum[11],carry[11]);
 peres_fa m12(a[12],b[12],cin,sum[12],carry[12]);
 peres_fa m13(a[13],b[13],cin,sum[13],carry[13]);
 peres_fa m14(a[14],b[14],cin,sum[14],carry[14]);
-peres_fa m15(a[15],b[15],cin,sum[15],carry[15]);
-peres_fa m16(a[16],b[16],cin,sum[16],carry);
+peres_fa m15(a[15],b[15],cin,sum[15],carry);
 endmodule
-
                   Testbench 
 
 module bit_16_fa_tb();
