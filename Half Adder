@@ -39,7 +39,7 @@ begin s=0; c=1;
 end
 end
 endmodule
-                          TESTBENCH
+                 TESTBENCH
 
 module ha_tb();
 wire s,c;
