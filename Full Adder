@@ -1,6 +1,7 @@
 2.FULL ADDER
-                        GATE-LEVEL-MODELING
-                              DESIGN
+                GATE-LEVEL-MODELING
+                      DESIGN
+
 module fa(sum,carry,cin,a,b);
 output sum ,carry;
 input a,b,cin;
@@ -12,7 +13,8 @@ and t3(w2,w1,cin);
 and t4(w3,a,b);
 or t5(carry,w2,w3);
 endmodule
-                            DATA-FLOW-MODELING
+                DATA-FLOW-MODELING
+
 module fa(sum,carry,cin,a,b);
 output sum ,carry;
 input a,b,cin;
@@ -21,7 +23,8 @@ wire w1,w2,w3;
 assign sum= a^b^cin;
 assign carry=(a&b)|cin&(a^b);
 endmodule
-                          BEHAVIROL-MODELING
+                BEHAVIROL-MODELING
+
 module fa(sum,carry,cin,a,b);
 output reg sum ,carry;
 input a,b,cin;
@@ -55,7 +58,8 @@ begin sum=1;carry=1;
 end
 end
 endmodule
-                          TESTBENCH
+                TESTBENCH
+
 module fa_tb();
 wire sum,carry;
 reg a,b,cin;
