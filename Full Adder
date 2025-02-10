@@ -1,0 +1,73 @@
+2.FULL ADDER
+                        GATE-LEVEL-MODELING
+                              DESIGN
+module fa(sum,carry,cin,a,b);
+output sum ,carry;
+input a,b,cin;
+wire w1,w2,w3;
+//gate level modeling
+xor t1(w1,a,b);
+xor t2(sum,w1,cin);
+and t3(w2,w1,cin);
+and t4(w3,a,b);
+or t5(carry,w2,w3);
+endmodule
+                            DATA-FLOW-MODELING
+module fa(sum,carry,cin,a,b);
+output sum ,carry;
+input a,b,cin;
+wire w1,w2,w3;
+//data flow modeling
+assign sum= a^b^cin;
+assign carry=(a&b)|cin&(a^b);
+endmodule
+                          BEHAVIROL-MODELING
+module fa(sum,carry,cin,a,b);
+output reg sum ,carry;
+input a,b,cin;
+wire w1,w2,w3;
+//behavirol modeling
+always @(a or b or cin)
+begin
+if (a==0 && b==0 && cin==0)
+begin sum=0; carry=0;
+end
+if (a==0 && b==0 && cin==1)
+begin sum=1; carry=0;
+end
+if (a==0 && b==1 && cin==0)
+begin sum=1; carry=0;
+end
+if (a==0 && b==1 && cin==1)
+begin sum=0; carry=1;
+end
+if (a==1 && b==0 && cin==0)
+begin sum=1; carry=0;
+end
+if (a==1 && b==0 && cin==1)
+begin sum=0; carry=1;
+end
+if (a==1 && b==1 && cin==0)
+begin sum=0; carry=1;
+end
+if (a==1 && b==1 && cin==1)
+begin sum=1;carry=1;
+end
+end
+endmodule
+                          TESTBENCH
+module fa_tb();
+wire sum,carry;
+reg a,b,cin;
+fa uut(sum,carry,cin,a,b);
+initial begin
+a=0; b=0; cin=0;
+#100; a=0; b=0; cin=1;
+#100; a=0; b=1; cin=0;
+#100; a=0; b=1; cin=1;
+#100; a=1; b=0; cin=0;
+#100; a=1; b=0; cin=1;
+#100; a=1; b=1; cin=0;
+#100; a=1; b=1; cin=1;
+end
+endmodule
