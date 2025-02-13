@@ -1,5 +1,5 @@
-               FULL ADDER USING DECODER 
-                       DESIGN
+             FULL ADDER USING DECODER 
+                      DESIGN
 
 module fa(s ,c,a,b,cin);
 output s,c;
