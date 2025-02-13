@@ -1,4 +1,4 @@
-               FULL ADDER USING DEMUX
+               FULL ADDER USING DECODER
                        DESIGN
 
 module fa(s ,c,a,b,cin);
