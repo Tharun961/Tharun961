@@ -1,4 +1,4 @@
-             FULL ADDER USING DECODER 
+IMPLEMENTATION OFFULL ADDER USING 3:8 DECODER 
                       DESIGN
 
 module fa(s ,c,a,b,cin);
