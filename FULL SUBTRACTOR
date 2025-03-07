@@ -1,0 +1,65 @@
+FULL SUBTRACTOR
+                            DESIGN
+                     GATE -LEVEL- MODELING
+module fa_sb(d,br,a,b,c);
+output d,br;
+input a,b,c;
+wire w1,w2,w3,w4,w5;
+//Gate level modeling
+xor t1(w1,a,b);
+xor t2(d,w1,c);
+not t3(w2,a);
+and t4(w3,w2,b);
+not t5(w4,w1);
+and t6(w5,c,w4);
+or t7(br,w3,w5);
+endmodule
+DATA-FLOW-MODELING
+module fa_sb(d,br,a,b,c);
+output d,br;
+input a,b,c;
+wire w1,w2,w3,w4,w5;
+//Data flow modeling 
+assign w1=(a^b);
+assign d=(w1^c);
+assign w2=~a;
+assign w4=~w1;
+assign w3=(w2 & b);
+assign w5=(w4 & c);
+assign br=( w5 | w3);
+endmodule
+BEHAVIROL-MODELING
+module fa_sb(d,br,a,b,c);
+output reg d,br;
+input a,b,c;
+always @( a or b or c)
+begin
+if(a==0 && b==0 && c==0) begin d=0; br=0; end
+if(a==0 && b==0 && c==1) begin d=1; br=1; end
+if(a==0 && b==1 && c==0) begin d=1; br=1; end
+if(a==0 && b==1 && c==1) begin d=0; br=1; end
+if(a==1 && b==0 && c==0) begin d=1; br=0; end
+if(a==1 && b==0 && c==1) begin d=0; br=0; end
+if(a==1 && b==1 && c==0) begin d=0; br=0; end
+if(a==1 && b==1 && c==1) begin d=1; br=1; end
+end
+endmodule
+
+                   TEST BENCH
+
+module fa_sb_tb();
+wire d,br;
+reg a,b,c;
+
+fa_sb uut(d,br,a,b,c);
+initial begin
+a=0; b=0; c=0;
+#100; a=0; b=0; c=1;
+#100; a=0; b=1; c=0;
+#100; a=0; b=1; c=1;
+#100; a=1; b=0; c=0;
+#100; a=1; b=0; c=1;
+#100; a=1; b=1; c=0;
+#100; a=1; b=1; c=1;
+end
+endmodule
