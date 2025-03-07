@@ -1,0 +1,94 @@
+RIPPLE CARRY ADDER
+                        GATE-LEVEL-MODELING
+                            DESIGN
+module fa(sum,carry,a,b,cin);
+output sum,carry;
+input a,b,cin;
+wire w1,w2,w3;
+//gate level modeling
+xor t1(w1,a,b);
+xor t2(sum,w1,cin);
+and t3(w2,a,b);
+and t4(w3,cin,w1);
+or t5(carry,w2,w3);
+endmodule
+
+module rca(sum,carry,a,b,cin);
+output [3:0]sum;
+output carry;
+input [3:0]a,b;
+input cin;
+wire [3:0]c;
+//gate level modeling    
+fa fa0(sum[0],c[0],a[0],b[0],cin);
+fa fa1(sum[1],c[1],a[1],b[1],c[0]);
+fa fa2(sum[2],c[2],a[2],b[2],c[1]);
+fa fa3(sum[3],carry,a[3],b[3],c[2]);
+endmodule
+                    DATA-FLOW-MODELING
+module fa(sum,carry,a,b,cin);
+output sum,carry;
+input a,b,cin;
+wire w1,w2,w3;
+//data flow
+assign sum=a+b+cin;
+assign carry=a+b+cin;
+endmodule
+
+module rca(sum,carry,a,b,cin);
+output [3:0]sum;
+output carry;
+input [3:0]a,b;
+input cin;
+wire [3:0]c;
+//data flow modeing
+assign sum= a+b+cin;
+assign  carry= a+b+cin;
+endmodule
+                       BEHAVIROL-MODELING
+module fa(sum, carry, cin, a, b);
+  output reg sum, carry;
+  input a, b, cin;
+
+  always @(a or b or cin) begin
+    sum   = a ^ b ^ cin;
+    carry = (a & b) | (b & cin) | (a & cin);
+  end
+endmodule
+
+module rca(sum, carry, a, b, cin);
+  output [3:0] sum;
+  output carry;
+  input [3:0] a, b;
+  input cin;
+  wire [3:0] w;
+  wire [4:0] carry;
+  assign carry[0] = cin;
+
+  genvar i;
+  generate
+    for (i = 0; i < 4; i = i + 1) begin: adder
+      fa fa(sum[i],carry[i],a[i],b[i],cin);
+      assign carry[i+1] = w[i];  
+    end
+  endgenerate
+endmodule
+
+                                TESTBENCH
+module rca_tb();
+wire [3:0]sum;
+wire carry;
+reg [3:0]a,b;
+reg cin;
+rca uut(sum,carry,a,b,cin);
+initial begin
+a=0; b=0; cin=0;
+#100; a=0; b=0; cin=1;
+#100; a=0; b=1; cin=0;
+#100; a=0; b=1; cin=1;
+#100; a=1; b=0; cin=0;
+#100; a=1; b=0; cin=1;
+#100; a=1; b=1; cin=0;
+#100; a=1; b=1; cin=1;
+end
+endmodule
