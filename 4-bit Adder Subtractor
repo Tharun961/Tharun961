@@ -1,0 +1,46 @@
+
+             DESIGN
+
+module fa(sum,carry,cin,a,b);
+output sum ,carry;
+input a,b,cin;
+wire w1,w2,w3;
+//data flow modeling
+assign sum= a^b^cin;
+assign carry=(a&b)|cin&(a^b);
+endmodule
+
+
+module parallel_subtractor(d,br,a,b,bin);
+output [3:0]d;
+output br;
+input [3:0]a,b;
+input bin;
+wire [3:0]w;
+wire [3:0]c;
+assign w[0]=(b[0]^bin);
+assign w[1]=(b[1]^bin);
+assign w[2]=(b[2]^bin);
+assign w[3]=(b[3]^bin);
+fa fa0(d[0],c[0],a[0],w[0],bin);
+fa fa1(d[1],c[1],a[1],w[1],c[0]);
+fa fa2(d[2],c[2],a[2],w[2],c[1]);
+fa fa3(d[3],br,a[3],w[3],c[2]);
+endmodule
+         
+              TEST-BENCH
+
+module parallel_subtractor_tb( );
+wire [3:0]d;
+wire br;
+reg [3:0]a,b;
+reg bin;
+parallel_subtractor uut(d,br,a,b,bin);
+initial begin
+bin=0;    or    bin=1;
+#100; a=4'd4; b=4'd4;
+end
+endmodule
+
+
+
