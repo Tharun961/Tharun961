@@ -1,0 +1,54 @@
+8-BIT CARRY SKIP ADDER
+                         
+                    DESIGN
+
+module fa(s, c, cin, a, b);
+  output s, c;
+  input a, b, cin;
+  wire w1, w2, w3;
+
+  xor (w1, a, b);
+  xor (s, w1, cin);
+  and (w2, w1, cin);
+  and (w3, a, b);
+  or (c, w2, w3);
+endmodule
+
+module csa_8bit(s, cout, a, b, cin);
+  output [7:0] s;
+  output cout;
+  input [7:0] a, b;
+  input cin;
+  wire [7:0] p;
+  wire carry, prop;
+  fa fa0(s[0], p[0], cin, a[0], b[0]);
+  fa fa1(s[1], p[1], p[0], a[1], b[1]);
+  fa fa2(s[2], p[2], p[1], a[2], b[2]);
+  fa fa3(s[3], p[3], p[2], a[3], b[3]);
+  fa fa4(s[4], p[4], p[3], a[4], b[4]);
+  fa fa5(s[5], p[5], p[4], a[5], b[5]);
+  fa fa6(s[6], p[6], p[5], a[6], b[6]);
+  fa fa7(s[7], p[7], p[6], a[7], b[7]);
+  and (prop, a[0]^b[0], a[1]^b[1], a[2]^b[2], a[3]^b[3], a[4]^b[4], a[5]^b[5], a[6]^b[6], a[7]^b[7]);
+  mux m1(cout, p[7], cin, prop);
+endmodule
+module mux(c, carry, cin, prop);
+  output c;
+  input carry, cin, prop;
+  assign c = (prop) ? cin : carry;
+endmodule
+                         
+                   TESTBENCH
+
+`timescale 1ns/1ps
+
+module csa_tb;
+  reg [7:0] a, b;
+  reg cin;
+  wire [7:0] s;
+  wire cout;
+csa_8bit uut(s, cout, a, b, cin);
+ initial begin
+    a = 8'b11111111; b = 8'b11111111; cin = 0; #10;
+  end
+endmodule
