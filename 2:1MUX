@@ -1,0 +1,61 @@
+2:1MUX
+                DESIGN
+         GATE-LEVEL-MODELING
+
+module mux(a,i0,i1,y);
+output y;
+input a,i0,i1;
+wire w1,w2,w3;
+//gate level modeling
+not t1(w1,a);
+and t2(w2,i0,w1);
+and t3(w3,i1,a);
+or t4(y,w2,w3);
+endmodule
+
+        DATA-FLOW-MODELING
+
+module mux(a,i0,i1,y);
+output y;
+input a,i0,i1;
+wire w1,w2,w3;
+//data-flow-modeling
+assign y= a? i0:i1;
+endmodule
+
+
+      BEHAVIROL-MODELING
+
+module mux(a, i0, i1, y);
+output reg y;
+input a, i0, i1;
+//behavirol modeling 
+always @(a or i0 or i1) begin
+if (a == 0) begin
+y = i0; 
+end
+else if (a == 1) begin
+y = i1; 
+end
+end
+endmodule
+
+
+
+              TEST-BENCH
+
+module mux_tb();
+wire y;
+reg a,i0,i1;
+mux uut(a,i0,i1,y);
+initial begin
+a=0; i0=0; i1=0;
+#100; a=0; i0=0; i1=1;
+#100; a=0; i0=1; i1=0;
+#100; a=0; i0=1; i1=1;
+#100; a=1; i0=0; i1=0;
+#100; a=1; i0=0; i1=1;
+#100; a=1; i0=1; i1=0;
+#100; a=1; i0=1; i1=1;
+end
+endmodule
