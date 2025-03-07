@@ -1,0 +1,57 @@
+8-BIT CARRY SELECT ADDER
+                    
+                      DESIGN
+
+module fa(sum, carry, cin, a, b);
+  output sum, carry;
+  input a, b, cin;
+  assign sum = a ^ b ^ cin;
+  assign carry = (a & b) | (cin & (a ^ b));
+endmodule
+
+module mux(y, a, b, s);
+  output y;
+  input a, b, s;
+  assign y = (s) ? b : a;
+endmodule
+
+module csa_8bit(s, cout, a, b, cin);
+  output [7:0] s;
+  output cout;
+  input [7:0] a, b;
+  input cin;
+  wire [7:0] c;
+  wire [15:0] t, r;
+
+  fa fa0(t[0], r[0], a[0], b[0], cin);
+  fa fa1(t[1], r[1], a[1], b[1], r[0]);
+  fa fa2(t[2], r[2], a[2], b[2], r[1]);
+  fa fa3(t[3], r[3], a[3], b[3], r[2]);
+  fa fa4(t[4], r[4], a[4], b[4], r[3]);
+  fa fa5(t[5], r[5], a[5], b[5], r[4]);
+  fa fa6(t[6], r[6], a[6], b[6], r[5]);
+  fa fa7(t[7], r[7], a[7], b[7], r[6]);
+  mux m1(s[0], t[0], t[4], cin);
+  mux m2(s[1], t[1], t[5], c[0]);
+  mux m3(s[2], t[2], t[6], c[1]);
+  mux m4(s[3], t[3], t[7], c[2]);
+  mux m5(s[4], t[4], t[8], c[3]);
+  mux m6(s[5], t[5], t[9], c[4]);
+  mux m7(s[6], t[6], t[10], c[5]);
+  mux m8(s[7], t[7], t[11], c[6]);
+  mux m9(cout, r[7], r[15], c[7]); 
+endmodule
+
+
+                     TESTBENCH
+
+module csa_tb();
+  reg [3:0] a, b;  
+  reg [1:0] cin;   
+  wire [3:0] s;    
+  wire cout;     
+  csa uut (s, cout, a, b, cin);
+  initial begin
+  a = 8’d5; b = 8’d5; cin = 2’b01;
+  end
+endmodule
