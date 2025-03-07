@@ -1,0 +1,52 @@
+4-BIT CARRY SELECT ADDER
+                            DESIGN
+module fa(sum, carry, cin, a, b);
+  output sum, carry;
+  input a, b, cin; 
+  assign sum = a ^ b ^ cin;
+  assign carry = (a & b) | (cin & (a ^ b));
+endmodule
+
+module mux(y, a, b, s);
+  output y;
+  input a, b, s;
+  assign y = (s) ? b : a;
+endmodule
+
+module csa(s, cout, a, b, cin);
+  output [3:0] s;
+  output cout;
+  input [3:0] a, b;
+  input [1:0] cin;
+  
+  wire [3:0] c;
+  wire [8:0] t, r;
+
+  fa fa0(t[0], r[0], a[0], b[0], cin[0]);
+  fa fa1(t[1], r[1], a[1], b[1], r[0]);
+  fa fa2(t[2], r[2], a[2], b[2], r[1]);
+  fa fa3(t[3], r[3], a[3], b[3], r[2]);
+  fa fa4(t[4], r[4], a[0], b[0], cin[1]);
+  fa fa5(t[5], r[5], a[1], b[1], r[4]); 
+  fa fa6(t[6], r[6], a[2], b[2], r[5]);
+  fa fa7(t[7], r[7], a[3], b[3], r[6]);
+  mux m1(s[0], t[0], t[4], cin[1]);
+  mux m2(s[1], t[1], t[5], c[0]);
+  mux m3(s[2], t[2], t[6], c[1]);
+  mux m4(s[3], t[3], t[7], c[2]);
+  mux m5(cout, r[3], r[7], c[3]);
+endmodule
+
+                          
+                        TESTBENCH
+
+module csa_tb();
+  reg [3:0] a, b;  
+  reg [1:0] cin;   
+  wire [3:0] s;    
+  wire cout;     
+  csa uut (s, cout, a, b, cin);
+  initial begin
+  a = 4'b0101; b = 4'b0011; cin = 2'b01;
+  end
+endmodule
