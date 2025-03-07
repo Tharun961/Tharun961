@@ -1,0 +1,75 @@
+4:1 MUX
+             DATA-FLOW MODELING
+
+module mux(y,i0,i1,i2,i3,a,b);
+output y;
+input a,b;
+input i0,i1,i2,i3;
+wire w1,w2,w3,w4,w5,w6;
+//gate-level-modeling
+not t1(w1,a);
+not t2(w2,b);
+and t3(w3,i0,w1,w2);
+and t4(w4,i1,w1,b);
+and t5(w5,i2,a,w2);
+and t6(w6,i3,a,b);
+or t7(y,w3,w4,w5,w6);
+endmodule
+
+              DATA-FLOW-MODELING
+
+module mux(y,i0,i1,i2,i3,a,b);
+output y;
+input a,b;
+input i0,i1,i2,i3;
+wire w1,w2,w3,w4,w5,w6;
+//data flow modeling
+assign w1=~a;
+assign w2=~b;
+assign w3=~a  & ~b & i0;
+assign w4=~a & b & i1;
+assign w5=a & ~b & i2;
+assign w6= a & b & i3;
+assign y= w3 | w4 | w5 | w6;
+endmodule
+
+            BEHAVIORAL-MODELING
+
+module mux(y,i0,i1,i2,i3,a,b);
+output reg  y;
+input a,b;
+input i0,i1,i2,i3;
+wire w1,w2,w3,w4,w5,w6;
+always @(a or b)
+begin 
+if(a==0 && b==0 )
+begin y = i0;
+end
+if(a==0 && b==1 )
+begin y = i1;
+end
+if(a==1 && b==0 )
+begin y = i2;
+end
+if(a==1 && b==1 )
+begin y = i3;
+end
+end
+endmodule
+
+
+
+          TEST-BENCH
+
+module mux_tb();
+wire y;
+reg a,b;
+reg i0,i1,i2,i3;
+mux uut(y,i0,i1,i2,i3,a,b);
+initial begin
+a=0; b=0; i0=1; i1=0; i2=0; i3=0;
+#100; a=0; b=1; i0=0; i1=1; i2=0; i3=0;
+#100; a=1; b=0; i0=0; i1=0; i2=1; i3=0;
+#100; a=1; b=1; i0=0; i1=0; i2=0; i3=1;
+end
+endmodule
