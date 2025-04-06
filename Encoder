@@ -1,0 +1,77 @@
+4:2 encoder
+
+        Design
+
+module encoder(a,b,y0,y1,y2,y3);
+output a,b;
+input y0,y1,y2,y3;
+//gate-level-modeling
+or t1(a,y2,y3);
+or t2(b,y1,y3);
+endmodule
+
+Data=Flow_modeling
+module encoder(a,b,y0,y1,y2,y3);
+output a,b;
+input y0,y1,y2,y3;
+//data-flow-modeling
+assign a=y2|y3;
+assign b=y1|y3;
+endmodule 
+
+  Test-Bench
+
+module encoder_tb();
+wire a,b;
+reg y0,y1,y2,y3;
+encoder uut(a,b,y0,y1,y2,y3);
+initial begin
+y0=1; y1=0;y2=0;y3=0;
+#100 y0=0; y1=1;y2=0;y3=0;
+#100; y0=0; y1=0;y2=1;y3=0;
+#100; y0=0; y1=0;y2=0;y3=1;
+end
+endmodule
+
+
+8:3 encoder
+
+        Design
+
+module encoder(a,b,c,y0,y1,y2,y3,y4,y5,y6,y7);
+output a,b,c;
+input y0,y1,y2,y3,y4,y5,y6,y7;
+//gate-level-modeling
+or t1(a,y4,y5,y6,y7);
+or t2(b,y2,y3,y6,y7);
+or t3(c,y1,y3,y5,y7);
+endmodule
+
+    Data-Flow-Modeling
+ 
+module encoder(a,b,c,y0,y1,y2,y3,y4,y5,y6,y7);
+output a,b,c;
+input y0,y1,y2,y3,y4,y5,y6,y7;
+//data flow modeling
+assign a=y4|y5|y6|y7;
+assign b=y2|y3|y6|y7;
+assign c=y1|y3|y5|y7;
+endmodule
+
+    Testbench
+module encoder_tb();
+wire a,b,c;
+reg y0,y1,y2,y3,y4,y5,y6,y7;
+encoder uut(a,b,c,y0,y1,y2,y3,y4,y5,y6,y7);
+initial begin
+y0=1; y1=0;y2=0;y3=0;y4=0;y5=0;y6=0;y7=0;
+#100 y0=0; y1=1;y2=0;y3=0;y4=0;y5=0;y6=0;y7=0;
+#100 y0=0; y1=0;y2=1;y3=0;y4=0;y5=0;y6=0;y7=0;
+#100 y0=0; y1=0;y2=0;y3=1;y4=0;y5=0;y6=0;y7=0;
+#100 y0=0; y1=0;y2=0;y3=0;y4=1;y5=0;y6=0;y7=0;
+#100 y0=0; y1=0;y2=0;y3=0;y4=0;y5=1;y6=0;y7=0;
+#100 y0=0; y1=0;y2=0;y3=0;y4=0;y5=0;y6=1;y7=0;
+#100 y0=0; y1=0;y2=0;y3=0;y4=0;y5=0;y6=0;y7=1;
+
+end
+endmodule
