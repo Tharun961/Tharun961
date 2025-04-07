@@ -10,7 +10,8 @@ or t1(a,y2,y3);
 or t2(b,y1,y3);
 endmodule
 
-Data=Flow_modeling
+  Data=Flow_modeling
+
 module encoder(a,b,y0,y1,y2,y3);
 output a,b;
 input y0,y1,y2,y3;
@@ -18,6 +19,22 @@ input y0,y1,y2,y3;
 assign a=y2|y3;
 assign b=y1|y3;
 endmodule 
+
+ behavioral simulation 
+
+module encoder(a,y);
+output reg [1:0]a;
+input [3:0]y;
+always @ ( y)
+begin 
+case (y)
+4'b0001 : a=2'b00;
+4'b0010 : a=2'b01;
+4'b0100 : a=2'b10;
+4'b1000 : a=2'b11;
+endcase
+end
+endmodule
 
   Test-Bench
 
@@ -33,6 +50,21 @@ y0=1; y1=0;y2=0;y3=0;
 end
 endmodule
 
+   test-bench 
+
+module encoder_tb();
+wire [1:0]a;
+reg [3:0]y;
+encoder uut(a,y);
+initial begin
+y=4'b0001; #100;
+y=4'b0010; #100;
+y=4'b0100; #100;
+y=4'b1000; #100;
+#1000;
+$finish();
+end
+endmodul
 
 8:3 encoder
 
@@ -58,7 +90,29 @@ assign b=y2|y3|y6|y7;
 assign c=y1|y3|y5|y7;
 endmodule
 
+   Behavioral simulation 
+
+module encoder(a,y);
+output reg [2:0]a;
+input [7:0]y;
+always @ ( y)
+begin 
+case (y)
+8'b00000001 : a=3'b000;
+8'b00000010 : a=3'b001;
+8'b00000100 : a=3'b010;
+8'b00001000 : a=3'b011;
+8'b00010000 : a=3'b100;
+8'b00100000 : a=3'b101;
+8'b01000000 : a=3'b110;
+8'b10000000 : a=3'b111;
+endcase
+end
+endmodule
+
+
     Testbench
+
 module encoder_tb();
 wire a,b,c;
 reg y0,y1,y2,y3,y4,y5,y6,y7;
@@ -73,5 +127,25 @@ y0=1; y1=0;y2=0;y3=0;y4=0;y5=0;y6=0;y7=0;
 #100 y0=0; y1=0;y2=0;y3=0;y4=0;y5=0;y6=1;y7=0;
 #100 y0=0; y1=0;y2=0;y3=0;y4=0;y5=0;y6=0;y7=1;
 
+end
+endmodule
+
+   Test-bench
+
+module encoder_tb();
+wire [2:0]a;
+reg [7:0]y;
+encoder uut(a,y);
+initial begin
+y=8'b00000001; #100;
+y=8'b00000010; #100;
+y=8'b00000100; #100;
+y=8'b00001000; #100;
+y=8'b00010000; #100;
+y=8'b00100000; #100;
+y=8'b01000000; #100;
+y=8'b10000000; #100;
+#1000;
+$finish();
 end
 endmodule
