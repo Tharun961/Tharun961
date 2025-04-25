@@ -1,0 +1,29 @@
+1-BIT COMPARATOR
+               DESIGN
+module comparator(aeqb, alesb, agetb, a, b);
+    output aeqb, alesb, agetb;
+    input a, b;
+    wire w1, w2;
+    //gate level modeling
+ not t0(w1,a);
+ not t1(w2,b);
+ and t2(alesb,w1,b);
+ and t3(agetb,a,w2);
+ xnor t4(aeqb,a,b);
+endmodule
+            TEST-BENCH
+module comparator_tb();
+wire aeqb,alesb,agetb;
+reg a,b;
+comparator uut(aeqb,alesb,agetb,a,b);
+initial begin
+a=0; b=0;
+#100; a=0; b=1;
+#100; a=1; b=0;
+#100; a=1; b=1;
+end
+initial begin
+#500;
+$finish;
+end
+endmodule  
