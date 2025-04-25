@@ -25,6 +25,30 @@ module comparator(aeqb, alesb, agetb, a, b);
  assign aeqb=~(a^b);
 endmodule
 
+    BEHAVIOURAL-SIMULATION
+module comparator(aeqb, alesb, agetb, a, b);
+    output reg aeqb, alesb, agetb;
+    input a, b;
+    wire w1, w2;
+    always @(a or b)
+    begin
+        aeqb = 0;
+        alesb = 0;
+        agetb = 0;
+        if (a == 0 && b == 0) begin
+            aeqb = 1;
+        end
+        if (a == 0 && b == 1) begin
+            alesb = 1;
+        end
+        if (a == 1 && b == 0) begin
+            agetb = 1;
+        end
+        if (a == 1 && b == 1) begin
+            aeqb = 1;
+        end
+    end
+endmodule
 
             TEST-BENCH
 module comparator_tb();
