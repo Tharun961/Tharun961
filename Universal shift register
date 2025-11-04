@@ -1,0 +1,64 @@
+               Design
+module usr(
+input reset,clk,left_in,Right_in,
+input [1:0]sel,
+input [15:0]par_in,
+output reg [15:0]par_out);
+//behavioural modeling
+always @ (posedge clk  or posedge reset)
+begin
+if (reset)
+par_out <= 16'b0;
+else 
+begin
+case (sel)
+2'b00 : par_out <= par_out; // no change
+2'b01 : par_out <= {par_out[14:0], left_in}; //left shift
+2'b10 : par_out <= {right_in, par_out[15:1]}; // right shift
+2'b11 : par_out <= par_in; //parallel load
+endcase
+end
+endmodule
+
+Test-Bench
+
+`timescale 1ns/1ps
+module usr_tb();
+
+reg reset, clk, left_in, Right_in;   // signal names match the module
+reg [1:0] sel;
+reg [15:0] par_in;
+wire [15:0] par_out;
+
+// Instantiate the module
+usr uut (
+    .reset(reset),
+    .clk(clk),
+    .left_in(left_in),
+    .Right_in(Right_in),   // match the signal name exactly
+    .sel(sel),
+    .par_in(par_in),
+    .par_out(par_out)
+);
+
+// Clock generation
+initial clk = 0;
+always #10 clk = ~clk;
+
+// Test stimulus
+initial begin
+    reset = 1;
+    left_in = 0;
+    Right_in = 0;          // corrected
+    par_in = 0;
+    sel = 2'b00;
+    #20;
+
+    // Release reset and apply inputs
+    reset = 0;
+    left_in = 1'b1;
+    Right_in = 1'b0;       // corrected
+    par_in = 16'b0000_0000_0000_0101;
+end
+
+endmodule
